@@ -75,6 +75,9 @@ async def new_post(client: Client, message: Message):
     if not is_media(message):
         return
 
+    # ✅ Wait 10 seconds so file-to-link bot can add workers.dev link first
+    await asyncio.sleep(10)
+
     converted_id = message.id * abs(client.db_channel.id)
     string = f"get-{converted_id}"
     base64_string = await encode(string)
