@@ -132,6 +132,20 @@ async def start_command(client: Client, message: Message):
                 base64_string = message.text.split(" ", 1)[1]
             except:
                 return
+
+            # ── fs_ format — must check BEFORE decode() ──────────
+            if base64_string.startswith("fs_"):
+                try:
+                    import base64 as _b64
+                    msg_id = int(_b64.b64decode(base64_string[3:] + "==").decode())
+                    ids = [msg_id]
+                except Exception:
+                    return
+                snt_msgs = await send_messages_by_ids(client, message, ids)
+                await schedule_delete(message, snt_msgs)
+                return
+            # ─────────────────────────────────────────────────────
+
             _string = await decode(base64_string)
 
             # ── NEW: batchkey format — batchkey_SHORTKEY ────────
@@ -146,18 +160,6 @@ async def start_command(client: Client, message: Message):
                 return
             # ───────────────────────────────────────────────────
 
-            # ── NEW: fs_ format — fs_BASE64(msg_id) ─────────────
-            if base64_string.startswith("fs_"):
-                try:
-                    import base64 as _b64
-                    msg_id = int(_b64.b64decode(base64_string[3:]).decode())
-                    ids = [msg_id]
-                except Exception:
-                    return
-                snt_msgs = await send_messages_by_ids(client, message, ids)
-                await schedule_delete(message, snt_msgs)
-                return
-            # ───────────────────────────────────────────────────
 
             argument = _string.split("-")
             if (len(argument) == 5) or (len(argument) == 4):
