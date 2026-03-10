@@ -63,7 +63,7 @@ TIME = int(os.environ.get("TIME", "600"))
 # TRUE for yes FALSE if no
 
 # Do you want to enable shortner in this bot? Set to TRUE for yes, False for no.
-USE_SHORTLINK = True if os.environ.get('USE_SHORTLINK', "True") == "TRUE" else False 
+USE_SHORTLINK = True if os.environ.get('USE_SHORTLINK', "TRUE") == "TRUE" else False 
 # Enter the base URL of the shortlink service (without https://).
 SHORTLINK_API_URL = os.environ.get("SHORTLINK_API_URL", "gplinks.com")
 # Enter the API key provided by your chosen shortner service.
