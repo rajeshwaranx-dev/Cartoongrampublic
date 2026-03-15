@@ -55,7 +55,7 @@ USER_REPLY_TEXT = os.environ.get(
     "📢 Channel: https://t.me/Askmovies4"
 )
 # Enter your Telegram username (without @). A public username is required to use this bot.
-OWNER_TAG = os.environ.get("OWNER_TAG", "the_universal_being")
+OWNER_TAG = os.environ.get("OWNER_TAG", "Master_xkid")
 # Time (in seconds) after which messages will be auto-deleted. Use 0 to keep messages permanently.
 TIME = int(os.environ.get("TIME", "600"))
 
@@ -81,7 +81,7 @@ TUT_VID = os.environ.get("TUT_VID","https://t.me/trinityXmods/53")
 # Set to TRUE to activate payments in the bot and earn money.
 USE_PAYMENT = True if (True if os.environ.get("USE_PAYMENT", "TRUE") == "TRUE" else False) and (USE_SHORTLINK) else False
 # Enter your UPI ID for receiving payments.
-UPI_ID = os.environ.get("UPI_ID", "sendrajbooks@fam")
+UPI_ID = os.environ.get("UPI_ID", "Rajeshtg18x@ibl")
 # Enter the direct image URL of your UPI QR code (used for payment).
 UPI_IMAGE_URL = os.environ.get("UPI_IMAGE_URL", "https://envs.sh/Vpg.jpg")
 #No need to change anything here.
