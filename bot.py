@@ -6,12 +6,14 @@
 # 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
 # ────────────────────────────────────────────────────────────────
 
+import asyncio
 from aiohttp import web
-from database.database import full_adminbase
+from database.database import full_adminbase, get_expired_users, mark_expiry_notified
 from plugins import web_server
 from pyrogram import Client
 from pyrogram.enums import ParseMode
 from pyrogram.raw import functions
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import sys
 from pyromod import listen
 from datetime import datetime
@@ -129,11 +131,43 @@ class Bot(Client):
         self.LOGGER(__name__).info(f"Bot made by @the_universal_being!")
         self.username = usr_bot_me.username
 
+        # ✅ Start expiry checker background task
+        asyncio.create_task(self.expiry_checker())
+        self.LOGGER(__name__).info("Expiry checker started.")
+
         # web-response
         app = web.AppRunner(await web_server())
         await app.setup()
         bind_address = "0.0.0.0"
         await web.TCPSite(app, bind_address, PORT).start()
+
+    async def expiry_checker(self):
+        while True:
+            try:
+                expired_users = await get_expired_users()
+                for user in expired_users:
+                    try:
+                        await self.send_message(
+                            chat_id=user["_id"],
+                            text=(
+                                "⚠️ <b>YOUR PREMIUM HAS EXPIRED!</b>\n\n"
+                                "Your premium membership has ended.\n"
+                                "Renew now to continue enjoying:\n\n"
+                                "○ DIRECT FILES\n"
+                                "○ AD-FREE EXPERIENCE\n"
+                                "○ UNLIMITED MOVIES, SERIES & ANIME\n\n"
+                                "Use /buy to renew your plan 🔄"
+                            ),
+                            reply_markup=InlineKeyboardMarkup([[
+                                InlineKeyboardButton("🔄 Renew Now", callback_data="buy_prem")
+                            ]])
+                        )
+                        await mark_expiry_notified(user["_id"])
+                    except Exception as e:
+                        self.LOGGER(__name__).warning(f"Failed to notify {user['_id']}: {e}")
+            except Exception as e:
+                self.LOGGER(__name__).warning(f"Expiry checker error: {e}")
+            await asyncio.sleep(3600)  # runs every 1 hour
 
     async def stop(self, *args):
         await super().stop()
