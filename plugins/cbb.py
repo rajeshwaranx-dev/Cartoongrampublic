@@ -38,8 +38,9 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 f"○ UNLIMITED MOVIES, SERIES & ANIME\n"
                 f"○ FULL ADMIN SUPPORT\n\n"
                 f"━━━━━━━━━━━━━━━\n\n"
+                f"📸 <a href='{UPI_IMAGE_URL}'>Scan QR Code</a>\n\n"
                 f"✨ <b>UPI ID</b> - <code>{UPI_ID}</code>\n\n"
-                f"<b>CHECK YOUR ACTIVE PLAN</b> /myplan\n\n"
+                
                 f"🚫 <b>MUST SEND SCREENSHOT AFTER PAYMENT</b>"
             ),
             disable_web_page_preview=True,
