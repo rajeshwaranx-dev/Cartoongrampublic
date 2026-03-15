@@ -1,27 +1,27 @@
 # ────────────────────────────────────────────────────────────────
+
 # ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
 # 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
+
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
 # 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+
 # ────────────────────────────────────────────────────────────────
 
-import asyncio
 from aiohttp import web
-from database.database import full_adminbase, get_expired_users, mark_expiry_notified
+from database.database import full_adminbase
 from plugins import web_server
 from pyrogram import Client
 from pyrogram.enums import ParseMode
-from pyrogram.raw import functions
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import sys
 from pyromod import listen
 from datetime import datetime
 
-from config import ADMINS, API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL, FORCE_SUB_CHANNEL2, FORCE_SUB_CHANNEL3, FORCE_SUB_CHANNEL4, CHANNEL_ID, PORT, OWNER_ID
+from config import ADMINS, API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL,FORCE_SUB_CHANNEL2, FORCE_SUB_CHANNEL3, FORCE_SUB_CHANNEL4, CHANNEL_ID, PORT, OWNER_ID
 
 
-# fix for current pyrogram
+# fix for current pyrogram 
 from pyrogram import utils
 
 def get_peer_type_new(peer_id: int) -> str:
@@ -52,10 +52,6 @@ class Bot(Client):
 
     async def start(self):
         await super().start()
-
-        # ✅ Drop all pending updates accumulated while bot was offline
-        await self.invoke(functions.updates.GetState())
-
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
         print(ADMINS)
@@ -110,13 +106,13 @@ class Bot(Client):
         try:
             db_channel = await self.get_chat(CHANNEL_ID)
             self.db_channel = db_channel
-            test = await self.send_message(chat_id=db_channel.id, text="Test Message")
+            test = await self.send_message(chat_id = db_channel.id, text = "Test Message")
             await test.delete()
         except Exception as e:
             self.LOGGER(__name__).warning(e)
             self.LOGGER(__name__).warning(f"Make Sure bot is Admin in DB Channel, and Double check the CHANNEL_ID Value, Current Value {CHANNEL_ID}")
             sys.exit()
-
+        
         initadmin = await full_adminbase()
         for x in initadmin:
             if x in ADMINS:
@@ -131,53 +127,24 @@ class Bot(Client):
         self.LOGGER(__name__).info(f"Bot made by @the_universal_being!")
         self.username = usr_bot_me.username
 
-        # ✅ Start expiry checker background task
-        asyncio.create_task(self.expiry_checker())
-        self.LOGGER(__name__).info("Expiry checker started.")
 
-        # web-response
+        #web-response
         app = web.AppRunner(await web_server())
         await app.setup()
         bind_address = "0.0.0.0"
         await web.TCPSite(app, bind_address, PORT).start()
 
-    async def expiry_checker(self):
-        while True:
-            try:
-                expired_users = await get_expired_users()
-                for user in expired_users:
-                    try:
-                        await self.send_message(
-                            chat_id=user["_id"],
-                            text=(
-                                "⚠️ <b>YOUR PREMIUM HAS EXPIRED!</b>\n\n"
-                                "Your premium membership has ended.\n"
-                                "Renew now to continue enjoying:\n\n"
-                                "○ DIRECT FILES\n"
-                                "○ AD-FREE EXPERIENCE\n"
-                                "○ UNLIMITED MOVIES, SERIES & ANIME\n\n"
-                                "Use /buy to renew your plan 🔄"
-                            ),
-                            reply_markup=InlineKeyboardMarkup([[
-                                InlineKeyboardButton("🔄 Renew Now", callback_data="buy_prem")
-                            ]])
-                        )
-                        await mark_expiry_notified(user["_id"])
-                    except Exception as e:
-                        self.LOGGER(__name__).warning(f"Failed to notify {user['_id']}: {e}")
-            except Exception as e:
-                self.LOGGER(__name__).warning(f"Expiry checker error: {e}")
-            await asyncio.sleep(3600)  # runs every 1 hour
-
     async def stop(self, *args):
         await super().stop()
         self.LOGGER(__name__).info("Bot stopped.contact @the_universal_being")
 
-
 # ────────────────────────────────────────────────────────────────
+
 # ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
 # 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
+
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
 # 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+
 # ────────────────────────────────────────────────────────────────
