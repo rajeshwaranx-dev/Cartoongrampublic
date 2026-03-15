@@ -30,27 +30,38 @@ async def cb_handler(client: Bot, query: CallbackQuery):
                 ]
             )
         )
-    elif data == "close":
-        await query.message.delete()
-        try:
-            await query.message.reply_to_message.delete()
-        except:
-            pass
     elif data == "buy_prem":
-        await query.message.edit_text(
-            text=f"👋 @{query.from_user.username}, here are our Prime Membership plans – {PRICE1}/7 days, {PRICE2}/1 month, {PRICE3}/3 months, {PRICE4}/6 months, {PRICE5}/1 year | 💵 UPI ID: <code>{UPI_ID}</code> | 📸 <a href='{UPI_IMAGE_URL}'>Scan QR Code</a> to pay | 🧾 After payment, send your screenshot | 💬 For help or alternative payment methods, contact @Master_xkid",
-            disable_web_page_preview=True,
-            reply_markup = InlineKeyboardMarkup(
-                [   
-                    [
-                        InlineKeyboardButton("ꜱᴇɴᴅ ᴘᴀʏᴍᴇɴᴛ ꜱᴄʀᴇᴇɴꜱʜᴏᴛ 📸", url=(SCREENSHOT_URL))
-                    ],
-                    [
-                        InlineKeyboardButton("🔒 Close", callback_data = "close")
-                    ]
+    await query.message.edit_text(
+        text=(
+            f"<b>♻️ AVAILABLE PLANS ♻️</b>\n\n"
+            f"• <b>1 WEEK</b>  -  <code>{PRICE1}</code>\n"
+            f"• <b>1 MONTH</b>  -  <code>{PRICE2}</code>\n"
+            f"• <b>3 MONTHS</b>  -  <code>{PRICE3}</code>\n"
+            f"• <b>6 MONTHS</b>  -  <code>{PRICE4}</code>\n\n"
+            f"━━━━━━━━━━━━━━━\n\n"
+            f"<b>🎁 PREMIUM FEATURES</b>\n\n"
+            f"○ NO NEED TO VERIFY\n"
+            f"○ DIRECT FILES\n"
+            f"○ AD-FREE EXPERIENCE\n"
+            f"○ UNLIMITED MOVIES, SERIES & ANIME\n"
+            f"○ FULL ADMIN SUPPORT\n\n"
+            f"━━━━━━━━━━━━━━━\n\n"
+            f"✨ <b>UPI ID</b> - <code>{UPI_ID}</code>\n\n"
+            f"<b>CHECK YOUR ACTIVE PLAN</b> /myplan\n\n"
+            f"🚫 <b>MUST SEND SCREENSHOT AFTER PAYMENT</b>"
+        ),
+        disable_web_page_preview=True,
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton("ꜱᴇɴᴅ ꜱᴄʀᴇᴇɴꜱʜᴏᴛ 📸", url=SCREENSHOT_URL)
+                ],
+                [
+                    InlineKeyboardButton("🔒 Close", callback_data="close")
                 ]
-            )
+            ]
         )
+    )
 
 # ────────────────────────────────────────────────────────────────
 
