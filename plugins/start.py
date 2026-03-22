@@ -1,11 +1,10 @@
 # ────────────────────────────────────────────────────────────────
-# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
+# ✅  THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
 # 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
-# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
+# ⭐  FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
 # 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
 # ────────────────────────────────────────────────────────────────
-
 import asyncio
 import os
 import random
@@ -16,7 +15,6 @@ from pyrogram import Client, filters
 from pyrogram.enums import ParseMode
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
-
 from bot import Bot
 from config import ADMINS, CHANNEL_ID, FORCE_MSG, FORCE_SUB_CHANNEL, FORCE_SUB_CHANNEL2, OWNER_TAG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT, OWNER_ID, SHORTLINK_API_URL, SHORTLINK_API_KEY, USE_PAYMENT, USE_SHORTLINK, VERIFY_EXPIRE, TIME, TUT_VID, U_S_E_P
 from helper_func import encode, get_readable_time, increasepremtime, subscribed, decode, get_messages, get_shortlink, get_verify_status, update_verify_status, get_exp_time
@@ -24,20 +22,15 @@ from database.database import add_admin, add_user, del_admin, del_user, full_adm
 
 SECONDS = TIME
 TUT_VID = f"{TUT_VID}"
-
-# PUBLIC BOT — sends files to users
 DISABLE_FILE_SEND = False
-
-# If DISABLE_FILE_SEND=true this bot never sends files
 DISABLE_FILE_SEND = os.environ.get("DISABLE_FILE_SEND", "").lower() == "true"
 
 
-# ── Helper: send messages by IDs to user ────────────────────────
 async def send_messages_by_ids(client, message, ids):
     if DISABLE_FILE_SEND:
         await message.reply("Sorry, this bot is not active. Please use the new link.")
         return []
-    temp_msg = await message.reply("ɢɪᴠᴇ ᴍᴇ ᴀ ꜱᴇᴄᴏɴᴅ ʜᴇʀᴇ...⏳")
+    temp_msg = await message.reply("ɢɪᴠᴇ ᴍᴇ ᴀ ꜱᴇᴄᴏɴᴅ ʜᴇʀᴇ...⏳ ")
     try:
         messages = await get_messages(client, ids)
     except:
@@ -78,12 +71,11 @@ async def send_messages_by_ids(client, message, ids):
     return snt_msgs
 
 
-# ── Helper: schedule auto-delete ────────────────────────────────
 async def schedule_delete(message, snt_msgs):
     if SECONDS == 0 or not snt_msgs:
         return
     notification_msg = await message.reply(
-        f"❗❕ <u>ʀᴇᴍɪɴᴅᴇʀ</u> ❗❕\n\n<b>ᴛʜᴇ ꜱᴇɴᴛ ꜰɪʟᴇ(ꜱ) ᴡɪʟʟ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ɪɴ {get_exp_time(SECONDS)}.\n\n<i>ᴘʟᴇᴀꜱᴇ ꜰᴏʀᴡᴀʀᴅ ᴛʜᴇᴍ ᴛᴏ ʏᴏᴜʀ ᴘᴇʀꜱᴏɴᴀʟ ꜱᴀᴠᴇᴅ ᴍᴇꜱꜱᴀɢᴇꜱ ꜰɪʀꜱᴛ ᴀɴᴅ ᴛʜᴇɴ ꜱᴛᴀʀᴛ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ᴛʜᴇᴍ ᴛʜᴇʀᴇ.</i>"
+        f"❗ ❕  <u>ʀᴇᴍɪɴᴅᴇʀ</u> ❗ ❕ \n\n<b>ᴛʜᴇ ꜱᴇɴᴛ ꜰɪʟᴇ(ꜱ) ᴡɪʟʟ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ɪɴ {get_exp_time(SECONDS)}.\n\n<i>ᴘʟᴇᴀꜱᴇ ꜰᴏʀᴡᴀʀᴅ ᴛʜᴇᴍ ᴛᴏ ʏᴏᴜʀ ᴘᴇʀꜱᴏɴᴀʟ ꜱᴀᴠᴇᴅ ᴍᴇꜱꜱᴀɢᴇꜱ ꜰɪʀꜱᴛ ᴀɴᴅ ᴛʜᴇɴ ꜱᴛᴀʀᴛ ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ ᴛʜᴇᴍ ᴛʜᴇʀᴇ.</i>"
     )
     await asyncio.sleep(SECONDS)
     for snt_msg in snt_msgs:
@@ -96,6 +88,29 @@ async def schedule_delete(message, snt_msgs):
     )
 
 
+async def send_verify_message(client, message, id):
+    token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+    await update_verify_status(id, verify_token=token, link="")
+    link = await get_shortlink(SHORTLINK_API_URL, SHORTLINK_API_KEY, f'https://telegram.me/{client.username}?start=verify_{token}')
+    if USE_PAYMENT:
+        btn = [
+            [InlineKeyboardButton("ᴠᴇʀɪꜰʏ 🎀", url=link)],
+            [InlineKeyboardButton('ʜᴏᴡ ᴛᴏ ᴠᴇʀɪꜰʏ 🥲', url=TUT_VID)],
+            [InlineKeyboardButton("ɢᴇᴛ ᴘʀᴇᴍɪᴜᴍ", callback_data="buy_prem")]
+        ]
+    else:
+        btn = [
+            [InlineKeyboardButton("ᴠᴇʀɪꜰʏ 🎀", url=link)],
+            [InlineKeyboardButton('ʜᴏᴡ ᴛᴏ ᴠᴇʀɪꜰʏ 🥲', url=TUT_VID)]
+        ]
+    await message.reply(
+        "ʏᴏᴜʀ ᴛᴏᴋᴇɴ ʜᴀꜱ ᴇxᴘɪʀᴇᴅ! ❌ ❌ \n\nᴘʟᴇᴀꜱᴇ ᴄʟɪᴄᴋ ᴏɴ ᴠᴇʀɪꜰʏ & ɢᴇᴛ ᴜɴʟɪᴍɪᴛᴇᴅ ᴀᴄᴄᴇꜱꜱ ꜰᴏʀ ɴᴇxᴛ 24 ʜᴏᴜʀꜱ",
+        reply_markup=InlineKeyboardMarkup(btn),
+        protect_content=False,
+        quote=True
+    )
+
+
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
     id = message.from_user.id
@@ -105,195 +120,154 @@ async def start_command(client: Client, message: Message):
         except:
             pass
     verify_status = await get_verify_status(id)
-    if USE_SHORTLINK and (not U_S_E_P):
-        for i in range(1):
-            if id in ADMINS:
-                continue
+
+    # ── Handle verify_ token callback ───────────────────────────
+    if USE_SHORTLINK and "verify_" in message.text:
+        if id not in ADMINS:
             if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
                 await update_verify_status(id, is_verified=False)
-            if "verify_" in message.text:
-                _, token = message.text.split("_", 1)
-                if verify_status['verify_token'] != token:
-                    return await message.reply("ᴇʜʜ, ᴛʜᴇ ᴛᴏᴋᴇɴ ʀᴇᴄᴇɪᴠᴇᴅ ɪꜱ ᴀɴ ɪɴᴠᴀʟɪᴅ ᴏʀ ᴇxᴘɪʀᴇᴅ ᴏɴᴇ.")
-                await update_verify_status(id, is_verified=True, verified_time=time.time())
-                if verify_status["link"] == "":
-                    reply_markup = None
-                await message.reply(f"ᴄᴏɴɢʀᴀᴛᴜʟᴀᴛɪᴏɴꜱ ʙᴜᴅᴅʏ!! 🎉\n\nʏᴏᴜʀ ᴛᴏᴋᴇɴ ʜᴀꜱ ʙᴇᴇɴ ᴠᴇʀɪꜰɪᴇᴅ!\n\n<i>ʏᴏᴜ ᴡɪʟʟ ʜᴀᴠᴇ ᴜɴʟɪᴍɪᴛᴇᴅ ᴀᴄᴄᴇꜱꜱ ꜰᴏʀ ᴛʜᴇ ɴᴇxᴛ 12 ʜᴏᴜʀꜱ!</i>", reply_markup=reply_markup, protect_content=False, quote=True)
-    if len(message.text) > 7:
-        for i in range(1):
-            if USE_SHORTLINK and (not U_S_E_P):
-                if id not in ADMINS:
-                    try:
-                        if not verify_status['is_verified']:
-                            continue
-                    except:
-                        continue
-            try:
-                base64_string = message.text.split(" ", 1)[1]
-            except:
-                return
-
-            # ── fs_ format — must check BEFORE decode() ──────────
-            if base64_string.startswith("fs_"):
-                try:
-                    import base64 as _b64
-                    msg_id = int(_b64.b64decode(base64_string[3:] + "==").decode())
-                    ids = [msg_id]
-                except Exception:
-                    return
-                snt_msgs = await send_messages_by_ids(client, message, ids)
-                await schedule_delete(message, snt_msgs)
-                return
-            # ─────────────────────────────────────────────────────
-
-            _string = await decode(base64_string)
-
-            # ── NEW: batchkey format — batchkey_SHORTKEY ────────
-            if _string.startswith("batchkey_"):
-                key = _string[len("batchkey_"):]
-                msg_ids = await get_batch(key)
-                if not msg_ids:
-                    await message.reply("ꜱᴏʀʀʏ, ʙᴀᴛᴄʜ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ᴇxᴘɪʀᴇᴅ. 🥲")
-                    return
-                snt_msgs = await send_messages_by_ids(client, message, msg_ids)
-                await schedule_delete(message, snt_msgs)
-                return
-            # ───────────────────────────────────────────────────
-
-
-            argument = _string.split("-")
-            if (len(argument) == 5) or (len(argument) == 4):
-                if not await present_hash(base64_string):
-                    try:
-                        await gen_new_count(base64_string)
-                    except:
-                        pass
-                await inc_count(base64_string)
-                if len(argument) == 5:
-                    try:
-                        start = int(int(argument[3]) / abs(client.db_channel.id))
-                        end = int(int(argument[4]) / abs(client.db_channel.id))
-                    except:
-                        return
-                    ids = range(start, end+1) if start <= end else []
-                elif len(argument) == 4:
-                    try:
-                        ids = [int(int(argument[3]) / abs(client.db_channel.id))]
-                    except:
-                        return
-                snt_msgs = await send_messages_by_ids(client, message, ids)
-                await schedule_delete(message, snt_msgs)
-                return
-
-            if U_S_E_P:
-                if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
-                    await update_verify_status(id, is_verified=False)
-
-            if (not U_S_E_P) or (id in ADMINS) or (verify_status['is_verified']):
-                if len(argument) == 3:
-                    try:
-                        start = int(int(argument[1]) / abs(client.db_channel.id))
-                        end = int(int(argument[2]) / abs(client.db_channel.id))
-                    except:
-                        return
-                    ids = range(start, end+1) if start <= end else []
-                elif len(argument) == 2:
-                    try:
-                        ids = [int(int(argument[1]) / abs(client.db_channel.id))]
-                    except:
-                        return
-                snt_msgs = await send_messages_by_ids(client, message, ids)
-                try:
-                    await schedule_delete(message, snt_msgs)
-                    return
-                except:
-                    newbase64_string = await encode(f"sav-ory-{_string}")
-                    if not await present_hash(newbase64_string):
-                        try:
-                            await gen_new_count(newbase64_string)
-                        except:
-                            pass
-                    clicks = await get_clicks(newbase64_string)
-                    newLink = f"https://t.me/{client.username}?start={newbase64_string}"
-                    link = await get_shortlink(SHORTLINK_API_URL, SHORTLINK_API_KEY, f'{newLink}')
-                    if USE_PAYMENT:
-                        btn = [
-                            [InlineKeyboardButton("ᴅᴏᴡɴʟᴏᴀᴅ ɴᴏᴡ 🎀", url=link)],
-                            [InlineKeyboardButton('ᴅᴏᴡɴʟᴏᴀᴅ ᴛᴜᴛᴏʀɪᴀʟ 🎥', url=TUT_VID)],
-                            [InlineKeyboardButton("ɢᴇᴛ ᴘʀᴇᴍɪᴜᴍ 💸", callback_data="buy_prem")]
-                        ]
-                    else:
-                        btn = [
-                            [InlineKeyboardButton("ᴅᴏᴡɴʟᴏᴀᴅ ɴᴏᴡ 🎀", url=link)],
-                            [InlineKeyboardButton('ᴅᴏᴡɴʟᴏᴀᴅ ᴛᴜᴛᴏʀɪᴀʟ 🎥', url=TUT_VID)]
-                        ]
-                    await message.reply(
-                        f"ʜᴇʟʟᴏ ᴛʜᴇʀᴇ!\n\nᴛᴏ ɢᴇᴛ ᴛʜᴇ ꜰɪʟᴇꜱ, ʜɪᴛ ᴛʜᴇ 'ᴅᴏᴡɴʟᴏᴀᴅ ɴᴏᴡ' ʙᴜᴛᴛᴏɴ.\n\n<blockquote>ᴛɪʟʟ ɴᴏᴡ, {clicks} ᴜꜱᴇʀꜱ ᴅᴏᴡɴʟᴏᴀᴅᴇᴅ ᴛʜᴇ ꜰɪʟᴇ(ꜱ)!</blockquote>",
-                        reply_markup=InlineKeyboardMarkup(btn),
-                        protect_content=False,
-                        quote=True
-                    )
-                    return
-
-    for i in range(1):
-        if USE_SHORTLINK and (not U_S_E_P):
-            if id not in ADMINS:
-                try:
-                    if not verify_status['is_verified']:
-                        continue
-                except:
-                    continue
-        reply_markup = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💝 AskMovies", url='https://t.me/AskMovies4')],
-            [
-                InlineKeyboardButton("💸 ᴘʀᴇᴍɪᴜᴍ", callback_data="buy_prem"),
-                InlineKeyboardButton("😊 ᴀʙᴏᴜᴛ ᴍᴇ", callback_data="about")
-            ],
-            [
-                InlineKeyboardButton("🔄️ ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ", url='https://t.me/Master_xkid'),
-                InlineKeyboardButton("🔒 ᴄʟᴏꜱᴇ", callback_data="close")
-            ]
-        ])
-        await message.reply_text(
-            text=START_MSG.format(
-                first=message.from_user.first_name,
-                last=message.from_user.last_name,
-                username=None if not message.from_user.username else '@' + message.from_user.username,
-                mention=message.from_user.mention,
-                id=message.from_user.id
-            ),
-            reply_markup=reply_markup,
-            disable_web_page_preview=True,
-            quote=True
-        )
-        return
-    if USE_SHORTLINK and (not U_S_E_P):
-        if id in ADMINS:
-            return
-        verify_status = await get_verify_status(id)
-        if not verify_status['is_verified']:
-            token = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
-            await update_verify_status(id, verify_token=token, link="")
-            link = await get_shortlink(SHORTLINK_API_URL, SHORTLINK_API_KEY, f'https://telegram.me/{client.username}?start=verify_{token}')
-            if USE_PAYMENT:
-                btn = [
-                    [InlineKeyboardButton("ᴠᴇʀɪꜰʏ 🎀", url=link)],
-                    [InlineKeyboardButton('ʜᴏᴡ ᴛᴏ ᴠᴇʀɪꜰʏ 🥲', url=TUT_VID)],
-                    [InlineKeyboardButton("ɢᴇᴛ ᴘʀᴇᴍɪᴜᴍ", callback_data="buy_prem")]
-                ]
-            else:
-                btn = [
-                    [InlineKeyboardButton("ᴠᴇʀɪꜰʏ 🎀", url=link)],
-                    [InlineKeyboardButton('ʜᴏᴡ ᴛᴏ ᴠᴇʀɪꜰʏ 🥲', url=TUT_VID)]
-                ]
+            _, token = message.text.split("_", 1)
+            if verify_status['verify_token'] != token:
+                return await message.reply("ᴇʜʜ, ᴛʜᴇ ᴛᴏᴋᴇɴ ʀᴇᴄᴇɪᴠᴇᴅ ɪꜱ ᴀɴ ɪɴᴠᴀʟɪᴅ ᴏʀ ᴇxᴘɪʀᴇᴅ ᴏɴᴇ.")
+            await update_verify_status(id, is_verified=True, verified_time=time.time())
             await message.reply(
-                "ʏᴏᴜʀ ᴛᴏᴋᴇɴ ʜᴀꜱ ᴇxᴘɪʀᴇᴅ! ❌ ❌ \n\nᴘʟᴇᴀꜱᴇ ᴄʟɪᴄᴋ ᴏɴ ᴠᴇʀɪғʏ & ɢᴇᴛ ᴜɴʟɪᴍɪᴛᴇᴅ ᴀᴄᴄᴇꜱꜱ ғᴏʀ ɴᴇxᴛ 24 ʜᴏᴜʀꜱ</u>",
-                reply_markup=InlineKeyboardMarkup(btn),
+                "ᴄᴏɴɢʀᴀᴛᴜʟᴀᴛɪᴏɴꜱ ʙᴜᴅᴅʏ!! 🎉\n\nʏᴏᴜʀ ᴛᴏᴋᴇɴ ʜᴀꜱ ʙᴇᴇɴ ᴠᴇʀɪꜰɪᴇᴅ!\n\n<i>ʏᴏᴜ ᴡɪʟʟ ʜᴀᴠᴇ ᴜɴʟɪᴍɪᴛᴇᴅ ᴀᴄᴄᴇꜱꜱ ꜰᴏʀ ᴛʜᴇ ɴᴇxᴛ 12 ʜᴏᴜʀꜱ!</i>",
                 protect_content=False,
                 quote=True
             )
             return
-    return
+
+    # ── File request handling ────────────────────────────────────
+    if len(message.text) > 7:
+
+        # ── VERIFY GATE (applies to ALL link types) ──────────────
+        if USE_SHORTLINK and id not in ADMINS:
+            if verify_status['is_verified'] and VERIFY_EXPIRE < (time.time() - verify_status['verified_time']):
+                await update_verify_status(id, is_verified=False)
+                verify_status = await get_verify_status(id)
+            if not verify_status['is_verified']:
+                await send_verify_message(client, message, id)
+                return
+        # ─────────────────────────────────────────────────────────
+
+        try:
+            base64_string = message.text.split(" ", 1)[1]
+        except:
+            return
+
+        # ── fs_ format (single file from channel_post.py) ────────
+        if base64_string.startswith("fs_"):
+            try:
+                import base64 as _b64
+                msg_id = int(_b64.b64decode(base64_string[3:] + "==").decode())
+                ids = [msg_id]
+            except Exception:
+                return
+            snt_msgs = await send_messages_by_ids(client, message, ids)
+            await schedule_delete(message, snt_msgs)
+            return
+
+        _string = await decode(base64_string)
+
+        # ── batchkey format ──────────────────────────────────────
+        if _string.startswith("batchkey_"):
+            key = _string[len("batchkey_"):]
+            msg_ids = await get_batch(key)
+            if not msg_ids:
+                await message.reply("ꜱᴏʀʀʏ, ʙᴀᴛᴄʜ ɴᴏᴛ ꜰᴏᴜɴᴅ ᴏʀ ᴇxᴘɪʀᴇᴅ. 🥲")
+                return
+            snt_msgs = await send_messages_by_ids(client, message, msg_ids)
+            await schedule_delete(message, snt_msgs)
+            return
+
+        argument = _string.split("-")
+
+        # ── poster_bot raw-ID format: get-id1-id2-id3-... ────────
+        # poster_bot encodes raw message IDs directly (no channel_id multiplication).
+        # Detect by checking: if argument[1] is NOT divisible by channel_id,
+        # these are raw IDs — use them directly without division.
+        def is_raw_id_format(parts, ch_id):
+            try:
+                return int(parts[1]) % ch_id != 0
+            except:
+                return False
+
+        if len(argument) >= 2 and is_raw_id_format(argument, abs(client.db_channel.id)):
+            try:
+                ids = [int(x) for x in argument[1:]]
+            except:
+                return
+            snt_msgs = await send_messages_by_ids(client, message, ids)
+            await schedule_delete(message, snt_msgs)
+            return
+
+        # ── original multiplied format (len 4 or 5) ──────────────
+        if (len(argument) == 5) or (len(argument) == 4):
+            if not await present_hash(base64_string):
+                try:
+                    await gen_new_count(base64_string)
+                except:
+                    pass
+            await inc_count(base64_string)
+            if len(argument) == 5:
+                try:
+                    start = int(int(argument[3]) / abs(client.db_channel.id))
+                    end = int(int(argument[4]) / abs(client.db_channel.id))
+                except:
+                    return
+                ids = range(start, end+1) if start <= end else []
+            elif len(argument) == 4:
+                try:
+                    ids = [int(int(argument[3]) / abs(client.db_channel.id))]
+                except:
+                    return
+            snt_msgs = await send_messages_by_ids(client, message, ids)
+            await schedule_delete(message, snt_msgs)
+            return
+
+        # ── original multiplied format (len 3 or 2) ──────────────
+        if len(argument) == 3:
+            try:
+                start = int(int(argument[1]) / abs(client.db_channel.id))
+                end = int(int(argument[2]) / abs(client.db_channel.id))
+            except:
+                return
+            ids = range(start, end+1) if start <= end else []
+        elif len(argument) == 2:
+            try:
+                ids = [int(int(argument[1]) / abs(client.db_channel.id))]
+            except:
+                return
+        else:
+            return
+        snt_msgs = await send_messages_by_ids(client, message, ids)
+        await schedule_delete(message, snt_msgs)
+        return
+
+    # ── /start with no file payload ──────────────────────────────
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💝 AskMovies", url='https://t.me/AskMovies4')],
+        [
+            InlineKeyboardButton("💸 ᴘʀᴇᴍɪᴜᴍ", callback_data="buy_prem"),
+            InlineKeyboardButton("😊 ᴀʙᴏᴜᴛ ᴍᴇ", callback_data="about")
+        ],
+        [
+            InlineKeyboardButton("🔄️ ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ", url='https://t.me/Master_xkid'),
+            InlineKeyboardButton("🔒 ᴄʟᴏꜱᴇ", callback_data="close")
+        ]
+    ])
+    await message.reply_text(
+        text=START_MSG.format(
+            first=message.from_user.first_name,
+            last=message.from_user.last_name,
+            username=None if not message.from_user.username else '@' + message.from_user.username,
+            mention=message.from_user.mention,
+            id=message.from_user.id
+        ),
+        reply_markup=reply_markup,
+        disable_web_page_preview=True,
+        quote=True
+    )
 
 
 #=====================================================================================#
@@ -309,8 +283,8 @@ async def not_joined(client: Client, message: Message):
             InlineKeyboardButton(text="✇ ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ ⌬", url=client.invitelink2),
         ],
         [
-            InlineKeyboardButton(text="〄 ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ ⍟", url=client.invitelink3),
-            InlineKeyboardButton(text="⍟ ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 〄", url=client.invitelink4),
+            InlineKeyboardButton(text="〄  ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ ⍟", url=client.invitelink3),
+            InlineKeyboardButton(text="⍟ ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 〄 ", url=client.invitelink4),
         ]
     ]
     try:
@@ -348,7 +322,7 @@ async def gen_link_encoded(client: Bot, message: Message):
         return
     link = f"https://t.me/{client.username}?start={hash.text}"
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("🎉 Click Here ", url=link)]])
-    await hash.reply_text(f"<b>🧑‍💻 Here is your generated link", quote=True, reply_markup=reply_markup)
+    await hash.reply_text(f"<b>🧑‍💻 Here is your generated link</b>", quote=True, reply_markup=reply_markup)
 
 
 @Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
@@ -506,9 +480,9 @@ if USE_PAYMENT:
             await message.reply("Some error occurred. Check logs.")
 
 # ────────────────────────────────────────────────────────────────
-# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
+# ✅  THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
 # 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
-# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
+# ⭐  FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
 # 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
 # ────────────────────────────────────────────────────────────────
