@@ -37,7 +37,7 @@ CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1003685839088"))
 # Enter your personal Telegram user ID (you can get it by sending '/id' to https://t.me/MissRose_bot).
 OWNER_ID = int(os.environ.get("OWNER_ID", "5371238852"))
 #port set to default 8080, change according to your will.
-PORT = os.environ.get("PORT", "8033")
+PORT = os.environ.get("PORT", "8013")
 # Enter your MongoDB connection URL. You can use a free cloud database from MongoDB Atlas.
 DB_URL = os.environ.get("DB_URL", "mongodb+srv://autopost:autopostx@cluster0.3v5ieig.mongodb.net/?appName=Cluster0")
 # Enter the name of your MongoDB database.
