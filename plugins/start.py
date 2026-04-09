@@ -246,13 +246,13 @@ async def start_command(client: Client, message: Message):
 
     # ── /start with no file payload ──────────────────────────────
     reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton("💝 AskMovies", url='https://t.me/AskMovies4')],
+        [InlineKeyboardButton("💝 Cartoongram", url='https://t.me/Cartoongram23')],
         [
             InlineKeyboardButton("💸 ᴘʀᴇᴍɪᴜᴍ", callback_data="buy_prem"),
             InlineKeyboardButton("😊 ᴀʙᴏᴜᴛ ᴍᴇ", callback_data="about")
         ],
         [
-            InlineKeyboardButton("🔄️ ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ", url='https://t.me/Master_xkid'),
+            InlineKeyboardButton("🔄️ ꜱᴏᴜʀᴄᴇ ᴄᴏᴅᴇ", url='https://t.me/ND2330'),
             InlineKeyboardButton("🔒 ᴄʟᴏꜱᴇ", callback_data="close")
         ]
     ])
